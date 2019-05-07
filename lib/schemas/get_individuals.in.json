@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "apiKey": {
+            "required": true,
+            "type": "string"
+        },
+        "dateOfBirth": {
+            "required": false,
+            "type": "string"
+        },
+        "placeOfBirth": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

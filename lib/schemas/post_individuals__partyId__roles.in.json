@@ -1,0 +1,111 @@
+{
+    "type": "object",
+    "properties": {
+        "apiKey": {
+            "required": true,
+            "type": "string"
+        },
+        "partyId": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The Party Role resource.",
+            "properties": {
+                "fromDate": {
+                    "description": "The date and time the resource became active in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).",
+                    "example": "2016-01-13T09:05:06+10:00",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "type": "string"
+                },
+                "id": {
+                    "allOf": [
+                        {
+                            "allOf": [
+                                {
+                                    "description": "The resource ID. Defaults to UUID v4",
+                                    "example": "123e4567-e89b-12d3-a456-426655440000",
+                                    "maxLength": 36,
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "The resource's unique identifier.",
+                    "readOnly": true
+                },
+                "partyRoleType": {
+                    "default": "Employee",
+                    "description": "The party's role type.",
+                    "enum": [
+                        "Director",
+                        "Employee",
+                        "Member",
+                        "Partner",
+                        "Trustee"
+                    ],
+                    "type": "string"
+                },
+                "relatedPartyId": {
+                    "allOf": [
+                        {
+                            "allOf": [
+                                {
+                                    "description": "The resource ID. Defaults to UUID v4",
+                                    "example": "123e4567-e89b-12d3-a456-426655440000",
+                                    "maxLength": 36,
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "The related party's unique identifier."
+                },
+                "relatedPartyRoleType": {
+                    "default": "Employer",
+                    "description": "The related party's role type.",
+                    "enum": [
+                        "Association",
+                        "Company",
+                        "Employer",
+                        "Organisation",
+                        "Partnership",
+                        "Trust"
+                    ],
+                    "type": "string"
+                },
+                "relationshipType": {
+                    "default": "Employment",
+                    "description": "The relationship type.",
+                    "enum": [
+                        "Directorship",
+                        "Employment",
+                        "Membership",
+                        "Partnership",
+                        "Trusteeship"
+                    ],
+                    "type": "string"
+                },
+                "toDate": {
+                    "description": "The date and time the resource became inactive in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).",
+                    "example": "",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "type": "string"
+                }
+            },
+            "required": [
+                "relatedPartyId",
+                "relationshipType"
+            ],
+            "type": "object"
+        }
+    }
+}

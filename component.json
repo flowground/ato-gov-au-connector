@@ -1,0 +1,1272 @@
+{
+    "title": "Business Registries",
+    "description": "# Introduction\nThe Business Registries API is built on HTTP. The API is RESTful. It has predictable resource URIs.\n\n  The API is documented in <a target=\"_blank\" href=\"https://github.com/OAI/OpenAPI-Specification\">OpenAPI</a> format.\n  In addition to the standard OpenAPI syntax we use a few\n  <a target=\"_blank\" href=\"https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md\">vendor extensions</a>.\n\n# Overview\nThe following sections describe the resources that make up the Business Registries REST API.\n## Current Version\nBy default, all requests to https://api.abr.ato.gov.au receive the `v1` version of the REST API. We encourage you to explicitly request this version via the `Accept` header.\n\n    Accept: application/vnd.abr-ato.v1+json\n\n## Schema\nAll API access is over HTTPS, and accessed from https://api.abr.ato.gov.au. All data is sent and received as JSON. Blank fields are included.\n\n  All dates use the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format:\n\n    YYYY-MM-DD\n\n  For example: `2017-07-01` (the 1st of July 2017)\n\n  All timestamps use the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format:\n\n    YYYY-MM-DDTHH:MM:SSZ\n\n  For example: `2017-07-01T11:05:06+10:00`\n\n## Timezones\nSome requests allow for specifying timestamps or generate timestamps with time zone information. We apply the following rules, in order of priority, to determine timezone information for API calls.\n### Explicitly provide an ISO 8601 timestamp with timezone information\nFor API calls that allow for a timestamp to be specified, we use that exact timestamp.\n\n  For example: `2017-07-01T11:05:06+10:00`\n\n## Pagination\nInformation about pagination is provided in the [Link](https://tools.ietf.org/html/rfc5988#page-6) header.\n\n  For example:\n\n    Link: <https://api.abr.ato.gov.au/individuals?page=2>; rel=\"next\",\n          <https://api.abr.ato.gov.au/individuals?page=34>; rel=\"last\"\n\n`rel=\"next\"` states that the next page is `page=2`. This makes sense, since by default, all paginated queries start at page `1`. `rel=\"last\"` provides some more information, stating that the last page of results is on `page 34`. Accordingly, we have 33 more pages of information that we can consume.\n## Parameters\nMany API methods take optional parameters:\n\n    GET /individuals/1234/addresses/?addressType='Mailing'\n\nIn this example, the '1234' value is provided for the `:partyId` parameter in the path while `:addressType` is passed in the query string.\nFor POST, PATCH, PUT, and DELETE requests, parameters not included in the URL should be encoded as JSON with a Content-Type of 'application/json'.\n## Metadata\nThe API provides **metadata services** that you can use to discover information about the classifcation schemes and values used by the Registry.\n\n  For example:\n\n    GET /classifications/roles\n\n  Sample response:\n\n    [\n      {\n        \"id\": \"123e4567-e89b-12d3-a456-426655440001\",\n        \"role\": \"Director\",\n        \"roleDescription\": \"An individual responsible for managing a company's ...\",\n        \"relationship\": \"Directorship\",\n        \"reciprocalRole\": \"Company\",\n        \"reciprocalRoleDescription\": \"An incorporated legal entity.\"\n      },\n      {\n        ...\n      }\n    ]\n\n## Root Endpoint\nYou can issue a GET request to the root endpoint (also known as the service root) to get all the endpoint categories that the REST API supports:\n\n    curl https://api.abr.ato.gov.au\n\n## Authentication\nThe Business Registries API supports API Key authentication.\n\n  When you sign up for an account, you are given your first API key. You can generate additional API keys, and delete\n  API keys (as you may need to rotate your keys in the future). You authenticate to the Business Registries API by\n  providing your secret key in the request header.\n\n  **Note:** Some requests will return `404 Not Found`, instead of `403 Permission Denied`. This is to prevent the\n  accidental leakage of information to unauthorised users.\n",
+    "docsUrl": "",
+    "url": "https://api.apis.guru/v2/specs/ato.gov.au/0.0.6/swagger.json",
+    "envVars": {},
+    "credentials": {
+        "fields": {
+            "server": {
+                "label": "Server",
+                "viewClass": "SelectView",
+                "model": [
+                    "//api.abr.ato.gov.au/ - Production API Server",
+                    "//api.sandbox.abr.ato.gov.au/ - Sandbox API Server",
+                    "https://api.abr.ato.gov.au/",
+                    "--- Custom URL"
+                ],
+                "required": true
+            },
+            "otherServer": {
+                "label": "Custom Server URL",
+                "viewClass": "TextFieldView"
+            }
+        }
+    },
+    "triggers": {
+        "startFlow": {
+            "main": "./lib/triggers/startFlow.js",
+            "type": "polling",
+            "title": "Start Flow",
+            "fields": {}
+        }
+    },
+    "actions": {
+        "get_business_names": {
+            "main": "./lib/actions/get_business_names.js",
+            "title": "Retrieve a list of business names",
+            "description": "Retrieve a list of business names\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_business_names.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_address_types": {
+            "main": "./lib/actions/get_classifications_address_types.js",
+            "title": "Retrieve a list of address types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_address_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_business_name_lifecycle_states": {
+            "main": "./lib/actions/get_classifications_business_name_lifecycle_states.js",
+            "title": "Retrieve a list of business name lifecycle states",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_business_name_lifecycle_states.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_electronic_address_types": {
+            "main": "./lib/actions/get_classifications_electronic_address_types.js",
+            "title": "Retrieve a list of electronic address types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_electronic_address_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_genders": {
+            "main": "./lib/actions/get_classifications_genders.js",
+            "title": "Retrieve a list of genders",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_genders.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_legal_entity_types": {
+            "main": "./lib/actions/get_classifications_legal_entity_types.js",
+            "title": "Retrieve a list of legal entity types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_legal_entity_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_license_lifecycle_states": {
+            "main": "./lib/actions/get_classifications_license_lifecycle_states.js",
+            "title": "Retrieve a list of license lifecycle states",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_license_lifecycle_states.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_license_types": {
+            "main": "./lib/actions/get_classifications_license_types.js",
+            "title": "Retrieve a list of license types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_license_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_name_directions": {
+            "main": "./lib/actions/get_classifications_name_directions.js",
+            "title": "Retrieve a list of name directions",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_name_directions.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_name_prefixes": {
+            "main": "./lib/actions/get_classifications_name_prefixes.js",
+            "title": "Retrieve a list of name prefixes",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_name_prefixes.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_name_types": {
+            "main": "./lib/actions/get_classifications_name_types.js",
+            "title": "Retrieve a list of name types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_name_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_registered_identifier_types": {
+            "main": "./lib/actions/get_classifications_registered_identifier_types.js",
+            "title": "Retrieve a list of registered identifier types",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_registered_identifier_types.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_classifications_roles": {
+            "main": "./lib/actions/get_classifications_roles.js",
+            "title": "Retrieve a list of roles",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_classifications_roles.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals": {
+            "main": "./lib/actions/get_individuals.js",
+            "title": "Retrieve a list of individuals",
+            "description": "Retrieve a list of individuals\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals": {
+            "main": "./lib/actions/post_individuals.js",
+            "title": "Create an individual",
+            "description": "Create an individual\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId_": {
+            "main": "./lib/actions/delete_individuals__partyId_.js",
+            "title": "Delete an individual",
+            "description": "Delete an individual with the specified identifier\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId_": {
+            "main": "./lib/actions/get_individuals__partyId_.js",
+            "title": "Retrieve an individual",
+            "description": "Retrieve an individual with the specified identifier\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId_": {
+            "main": "./lib/actions/put_individuals__partyId_.js",
+            "title": "Update an individual",
+            "description": "Update an individual\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__addresses": {
+            "main": "./lib/actions/get_individuals__partyId__addresses.js",
+            "title": "Retrieve a list of addresses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals__partyId__addresses": {
+            "main": "./lib/actions/post_individuals__partyId__addresses.js",
+            "title": "Create an address",
+            "description": "Create an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals__partyId__addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId__addresses__addressId_": {
+            "main": "./lib/actions/delete_individuals__partyId__addresses__addressId_.js",
+            "title": "Delete an address",
+            "description": "Delete an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__addresses__addressId_": {
+            "main": "./lib/actions/get_individuals__partyId__addresses__addressId_.js",
+            "title": "Retrieve an address",
+            "description": "Retrieve an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId__addresses__addressId_": {
+            "main": "./lib/actions/put_individuals__partyId__addresses__addressId_.js",
+            "title": "Update an address",
+            "description": "Update an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__business_names": {
+            "main": "./lib/actions/get_individuals__partyId__business_names.js",
+            "title": "Retrieve a list of business names",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__business_names.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals__partyId__business_names": {
+            "main": "./lib/actions/post_individuals__partyId__business_names.js",
+            "title": "Create a business name",
+            "description": "Create a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals__partyId__business_names.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId__business_names__productId_": {
+            "main": "./lib/actions/delete_individuals__partyId__business_names__productId_.js",
+            "title": "Delete a business name",
+            "description": "Delete a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__business_names__productId_": {
+            "main": "./lib/actions/get_individuals__partyId__business_names__productId_.js",
+            "title": "Retrieve a business name",
+            "description": "Retrieve a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId__business_names__productId_": {
+            "main": "./lib/actions/put_individuals__partyId__business_names__productId_.js",
+            "title": "Update a business name",
+            "description": "Update a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__electronic_addresses": {
+            "main": "./lib/actions/get_individuals__partyId__electronic_addresses.js",
+            "title": "Retrieve a list of electronic addresses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__electronic_addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals__partyId__electronic_addresses": {
+            "main": "./lib/actions/post_individuals__partyId__electronic_addresses.js",
+            "title": "Create an electronic address",
+            "description": "Create an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals__partyId__electronic_addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/delete_individuals__partyId__electronic_addresses__addressId_.js",
+            "title": "Delete an electronic address",
+            "description": "Delete an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/get_individuals__partyId__electronic_addresses__addressId_.js",
+            "title": "Retrieve an electronic address",
+            "description": "Retrieve an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/put_individuals__partyId__electronic_addresses__addressId_.js",
+            "title": "Update an electronic address",
+            "description": "Update an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__licenses": {
+            "main": "./lib/actions/get_individuals__partyId__licenses.js",
+            "title": "Retrieve a list of licenses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__licenses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals__partyId__licenses": {
+            "main": "./lib/actions/post_individuals__partyId__licenses.js",
+            "title": "Create a license",
+            "description": "Create a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals__partyId__licenses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId__licenses__productId_": {
+            "main": "./lib/actions/delete_individuals__partyId__licenses__productId_.js",
+            "title": "Delete a license",
+            "description": "Delete a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__licenses__productId_": {
+            "main": "./lib/actions/get_individuals__partyId__licenses__productId_.js",
+            "title": "Retrieve a license",
+            "description": "Retrieve a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId__licenses__productId_": {
+            "main": "./lib/actions/put_individuals__partyId__licenses__productId_.js",
+            "title": "Update a license",
+            "description": "Update a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__roles": {
+            "main": "./lib/actions/get_individuals__partyId__roles.js",
+            "title": "Retrieve a list of roles",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__roles.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_individuals__partyId__roles": {
+            "main": "./lib/actions/post_individuals__partyId__roles.js",
+            "title": "Create a role",
+            "description": "Create a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_individuals__partyId__roles.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_individuals__partyId__roles__roleId_": {
+            "main": "./lib/actions/delete_individuals__partyId__roles__roleId_.js",
+            "title": "Delete a role",
+            "description": "Delete a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_individuals__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_individuals__partyId__roles__roleId_": {
+            "main": "./lib/actions/get_individuals__partyId__roles__roleId_.js",
+            "title": "Retrieve a role",
+            "description": "Retrieve a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_individuals__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_individuals__partyId__roles__roleId_": {
+            "main": "./lib/actions/put_individuals__partyId__roles__roleId_.js",
+            "title": "Update a role",
+            "description": "Update a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_individuals__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_licenses": {
+            "main": "./lib/actions/get_licenses.js",
+            "title": "Retrieve a list of licenses",
+            "description": "Retrieve a list of licenses\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_licenses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations": {
+            "main": "./lib/actions/get_organisations.js",
+            "title": "Retrieve a list of organisations",
+            "description": "Retrieve a list of organisations\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations": {
+            "main": "./lib/actions/post_organisations.js",
+            "title": "Create an organisation",
+            "description": "Create an organisation\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId_": {
+            "main": "./lib/actions/delete_organisations__partyId_.js",
+            "title": "Delete an organisation",
+            "description": "Delete an organisation with the specified identifier\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId_": {
+            "main": "./lib/actions/get_organisations__partyId_.js",
+            "title": "Retrieve an organisation",
+            "description": "Retrieve an organisation with the specified identifier\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId_": {
+            "main": "./lib/actions/put_organisations__partyId_.js",
+            "title": "Update an organisation",
+            "description": "Update an organisation\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__addresses": {
+            "main": "./lib/actions/get_organisations__partyId__addresses.js",
+            "title": "Retrieve a list of addresses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations__partyId__addresses": {
+            "main": "./lib/actions/post_organisations__partyId__addresses.js",
+            "title": "Create an address",
+            "description": "Create an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations__partyId__addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId__addresses__addressId_": {
+            "main": "./lib/actions/delete_organisations__partyId__addresses__addressId_.js",
+            "title": "Delete an address",
+            "description": "Delete an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__addresses__addressId_": {
+            "main": "./lib/actions/get_organisations__partyId__addresses__addressId_.js",
+            "title": "Retrieve an address",
+            "description": "Retrieve an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId__addresses__addressId_": {
+            "main": "./lib/actions/put_organisations__partyId__addresses__addressId_.js",
+            "title": "Update an address",
+            "description": "Update an address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId__addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__business_names": {
+            "main": "./lib/actions/get_organisations__partyId__business_names.js",
+            "title": "Retrieve a list of business names",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__business_names.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations__partyId__business_names": {
+            "main": "./lib/actions/post_organisations__partyId__business_names.js",
+            "title": "Create a business name",
+            "description": "Create a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations__partyId__business_names.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId__business_names__productId_": {
+            "main": "./lib/actions/delete_organisations__partyId__business_names__productId_.js",
+            "title": "Delete a business name",
+            "description": "Delete a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__business_names__productId_": {
+            "main": "./lib/actions/get_organisations__partyId__business_names__productId_.js",
+            "title": "Retrieve a business name",
+            "description": "Retrieve a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId__business_names__productId_": {
+            "main": "./lib/actions/put_organisations__partyId__business_names__productId_.js",
+            "title": "Update a business name",
+            "description": "Update a business name\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId__business_names__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__electronic_addresses": {
+            "main": "./lib/actions/get_organisations__partyId__electronic_addresses.js",
+            "title": "Retrieve a list of electronic addresses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__electronic_addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations__partyId__electronic_addresses": {
+            "main": "./lib/actions/post_organisations__partyId__electronic_addresses.js",
+            "title": "Create an electronic address",
+            "description": "Create an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations__partyId__electronic_addresses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/delete_organisations__partyId__electronic_addresses__addressId_.js",
+            "title": "Delete an electronic address",
+            "description": "Delete an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/get_organisations__partyId__electronic_addresses__addressId_.js",
+            "title": "Retrieve an electronic address",
+            "description": "Retrieve an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId__electronic_addresses__addressId_": {
+            "main": "./lib/actions/put_organisations__partyId__electronic_addresses__addressId_.js",
+            "title": "Update an electronic address",
+            "description": "Update an electronic address\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId__electronic_addresses__addressId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__licenses": {
+            "main": "./lib/actions/get_organisations__partyId__licenses.js",
+            "title": "Retrieve a list of licenses",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__licenses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations__partyId__licenses": {
+            "main": "./lib/actions/post_organisations__partyId__licenses.js",
+            "title": "Create a license",
+            "description": "Create a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations__partyId__licenses.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId__licenses__productId_": {
+            "main": "./lib/actions/delete_organisations__partyId__licenses__productId_.js",
+            "title": "Delete a license",
+            "description": "Delete a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__licenses__productId_": {
+            "main": "./lib/actions/get_organisations__partyId__licenses__productId_.js",
+            "title": "Retrieve a license",
+            "description": "Retrieve a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId__licenses__productId_": {
+            "main": "./lib/actions/put_organisations__partyId__licenses__productId_.js",
+            "title": "Update a license",
+            "description": "Update a license\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId__licenses__productId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__roles": {
+            "main": "./lib/actions/get_organisations__partyId__roles.js",
+            "title": "Retrieve a list of roles",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__roles.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "post_organisations__partyId__roles": {
+            "main": "./lib/actions/post_organisations__partyId__roles.js",
+            "title": "Create a role",
+            "description": "Create a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/post_organisations__partyId__roles.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "delete_organisations__partyId__roles__roleId_": {
+            "main": "./lib/actions/delete_organisations__partyId__roles__roleId_.js",
+            "title": "Delete a role",
+            "description": "Delete a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/delete_organisations__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "get_organisations__partyId__roles__roleId_": {
+            "main": "./lib/actions/get_organisations__partyId__roles__roleId_.js",
+            "title": "Retrieve a role",
+            "description": "Retrieve a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/get_organisations__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put_organisations__partyId__roles__roleId_": {
+            "main": "./lib/actions/put_organisations__partyId__roles__roleId_.js",
+            "title": "Update a role",
+            "description": "Update a role\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put_organisations__partyId__roles__roleId_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

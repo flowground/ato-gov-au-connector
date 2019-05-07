@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "apiKey": {
+            "required": true,
+            "type": "string"
+        },
+        "registeredIdentifier": {
+            "required": false,
+            "type": "string"
+        },
+        "identifier": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

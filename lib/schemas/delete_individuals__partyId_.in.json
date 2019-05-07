@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "properties": {
+        "apiKey": {
+            "required": true,
+            "type": "string"
+        },
+        "partyId": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}

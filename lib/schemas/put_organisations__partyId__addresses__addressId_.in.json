@@ -1,0 +1,96 @@
+{
+    "type": "object",
+    "properties": {
+        "apiKey": {
+            "required": true,
+            "type": "string"
+        },
+        "partyId": {
+            "required": true,
+            "type": "string"
+        },
+        "addressId": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The Address resource.",
+            "properties": {
+                "city": {
+                    "description": "The city.",
+                    "example": "Canberra",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "The country.",
+                    "example": "Australia",
+                    "type": "string"
+                },
+                "fromDate": {
+                    "description": "The date and time the resource became active in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).",
+                    "example": "1979-01-13T09:05:06+10:00",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "type": "string"
+                },
+                "id": {
+                    "allOf": [
+                        {
+                            "allOf": [
+                                {
+                                    "description": "The resource ID. Defaults to UUID v4",
+                                    "example": "123e4567-e89b-12d3-a456-426655440000",
+                                    "maxLength": 36,
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "The resource's unique identifier.",
+                    "readOnly": true
+                },
+                "line1": {
+                    "description": "The address line 1.",
+                    "example": "Level 7",
+                    "type": "string"
+                },
+                "line2": {
+                    "description": "The address line 2.",
+                    "example": "21 Genge Street",
+                    "type": "string"
+                },
+                "line3": {
+                    "description": "The address line 3.",
+                    "example": "",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The address name.",
+                    "example": "Kembery Building",
+                    "type": "string"
+                },
+                "postalCode": {
+                    "description": "The postal code.",
+                    "example": "2601",
+                    "type": "string"
+                },
+                "suburb": {
+                    "description": "The suburb.",
+                    "example": "Civic",
+                    "type": "string"
+                },
+                "toDate": {
+                    "description": "The date and time the resource became inactive in the format defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).",
+                    "example": "",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    }
+}
